@@ -64,6 +64,4 @@ src/
 
 Workout data is fetched from a public REST endpoint at build/request time and cached with `next: { revalidate: 3600 }`, so pages stay fast while remaining fresh.
 
-## License
 
-Private project. All rights reserved.
