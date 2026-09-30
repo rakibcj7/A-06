@@ -4,15 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { usePlan } from "@/contexts/PlanContext";
-import { useSyncExternalStore } from "react";
-
-function useIsClient() {
-  return useSyncExternalStore(
-    () => () => {},
-    () => true,
-    () => false
-  );
-}
+import { useIsClient } from "@/lib/useIsClient";
 
 export function Navbar() {
   const pathname = usePathname();

@@ -1,11 +1,13 @@
 "use client";
- import Image from 'next/image'
-import { useState, useEffect } from "react";
+
+import Image from "next/image";
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Clock, Zap, BarChart, Check, Trash2, ExternalLink } from "lucide-react";
+import { Clock, Zap, BarChart, Check, X, ExternalLink } from "lucide-react";
 import { usePlan } from "@/contexts/PlanContext";
 import { useToast } from "@/components/Toast";
+import { useIsClient } from "@/lib/useIsClient";
 import { StatsRow, EmptyState } from "@/components/StatsCard";
 import type { Workout } from "@/lib/types";
 
@@ -14,12 +16,7 @@ export default function MyPlanClient() {
   const { addToast } = useToast();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<"plan" | "saved">("plan");
-  const [mounted, setMounted] = useState(false);
- 
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const isClient = useIsClient();
 
   const currentItems = activeTab === "plan" ? plan : saved;
 
@@ -44,7 +41,7 @@ export default function MyPlanClient() {
   const totalMinutes = plan.reduce((sum, w) => sum + w.duration, 0);
   const totalCalories = plan.reduce((sum, w) => sum + w.caloriesBurned, 0);
 
-  if (!mounted) {
+  if (!isClient) {
     return (
       <section className="px-4 py-12 md:px-6 md:py-16 lg:px-8">
         <h2 className="font-display text-2xl font-bold uppercase text-[#ededed]">
@@ -78,7 +75,7 @@ export default function MyPlanClient() {
           className={`pb-2 font-medium ${
             activeTab === "plan"
               ? "border-b-2 border-[#ccff00] text-[#ccff00]"
-              : "text-[#888] hover:text-[#ededde]"
+              : "text-[#888] hover:text-[#ededed]"
           }`}
         >
           Today&apos;s Plan
@@ -88,7 +85,7 @@ export default function MyPlanClient() {
           className={`pb-2 font-medium ${
             activeTab === "saved"
               ? "border-b-2 border-[#ccff00] text-[#ccff00]"
-              : "text-[#888] hover:text-[#ededde]"
+              : "text-[#888] hover:text-[#ededed]"
           }`}
         >
           Saved
@@ -111,11 +108,10 @@ export default function MyPlanClient() {
                 <Image
                   src={workout.image}
                   alt={workout.name}
+                  width={64}
+                  height={64}
                   className="h-16 w-16 rounded-lg object-cover"
-                  loading="lazy"
-                >
-
-                  </Image>
+                />
                 <div className="flex-1">
                   <h3
                     className={`font-display text-lg font-bold ${isDone ? "line-through" : ""}`}
@@ -139,25 +135,43 @@ export default function MyPlanClient() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-1">
-                  <Link href={`/workout/${workout.id}`}>
-                    <button className="rounded-lg border border-[#1a1a1a] bg-[#121212] p-2 text-[#ededde] hover:bg-[#1a1a1a]">
-                      <ExternalLink className="h-4 w-4" />
-                    </button>
+                <div className="flex shrink-0 items-center gap-1">
+                  <Link
+                    href={`/workout/${workout.id}`}
+                    title="View details"
+                    aria-label={`View details for ${workout.name}`}
+                    className="rounded-lg border border-[#1a1a1a] bg-[#121212] p-2 text-[#ededed] transition-colors hover:bg-[#1a1a1a]"
+                  >
+                    <ExternalLink className="h-4 w-4" />
                   </Link>
                   {activeTab === "plan" && (
                     <button
+                      type="button"
                       onClick={() => handleMarkDone(workout)}
-                      className="rounded-lg border border-[#1a1a1a] bg-[#121212] p-2 text-[#ededde] hover:bg-[#1a1a1a]"
+                      title={isDone ? "Mark as not done" : "Mark as done"}
+                      aria-label={
+                        isDone
+                          ? `Mark ${workout.name} as not done`
+                          : `Mark ${workout.name} as done`
+                      }
+                      aria-pressed={isDone}
+                      className={`rounded-lg border p-2 transition-colors ${
+                        isDone
+                          ? "border-[#ccff00] bg-[#ccff00]/15 text-[#ccff00]"
+                          : "border-[#1a1a1a] bg-[#121212] text-[#ededed] hover:border-[#ccff00]/50 hover:text-[#ccff00]"
+                      }`}
                     >
                       <Check className="h-4 w-4" />
                     </button>
                   )}
                   <button
+                    type="button"
                     onClick={() => handleRemove(workout)}
-                    className="rounded-lg border border-[#1a1a1a] bg-[#121212] p-2 text-[#ededde] hover:bg-red-500/20 hover:text-red-400"
+                    title="Remove"
+                    aria-label={`Remove ${workout.name}`}
+                    className="rounded-lg border border-[#1a1a1a] bg-[#121212] p-2 text-[#ededed] transition-colors hover:border-red-500/50 hover:bg-red-500/20 hover:text-red-400"
                   >
-                    <Trash2 className="h-4 w-4" />
+                    <X className="h-4 w-4" />
                   </button>
                 </div>
               </div>

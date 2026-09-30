@@ -27,22 +27,34 @@ export function SortDropdown({ value = "Duration", onChange }: SortDropdownProps
   return (
     <div ref={ref} className="relative inline-block">
       <button
+        type="button"
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-2 rounded-lg border border-[#1a1a1a] bg-[#121212] px-3 py-2 text-sm font-medium text-[#ededed] hover:border-[#ccff00]/50"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        className="flex items-center gap-2 rounded-lg border border-[#1a1a1a] bg-[#121212] px-3 py-2 text-sm font-medium text-[#ededed] transition-colors hover:border-[#ccff00]/50"
       >
-        Sort By: {value}
-        <ChevronDown className="h-4 w-4" />
+        <span className="text-[#888]">Sort By:</span> {value}
+        <ChevronDown
+          className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`}
+        />
       </button>
       {open && (
-        <div className="absolute top-full left-0 z-20 mt-1 w-40 rounded-lg border border-[#1a1a1a] bg-[#121212] py-1 shadow-lg">
+        <div
+          role="listbox"
+          aria-label="Sort workouts by"
+          className="absolute top-full left-0 z-20 mt-1 w-40 rounded-lg border border-[#1a1a1a] bg-[#121212] py-1 shadow-lg"
+        >
           {SORT_OPTIONS.map((opt) => (
             <button
               key={opt}
+              type="button"
+              role="option"
+              aria-selected={value === opt}
               onClick={() => {
                 onChange(opt);
                 setOpen(false);
               }}
-              className={`block w-full px-3 py-2 text-left text-sm ${
+              className={`block w-full px-3 py-2 text-left text-sm transition-colors ${
                 value === opt
                   ? "bg-[#ccff00]/10 text-[#ccff00]"
                   : "text-[#ededed] hover:bg-[#1a1a1a]"
