@@ -1,5 +1,7 @@
 # FitLog
  live link : a06-b-14-ph-fitlog.vercel.app
+ <br>
+ <br>
 A dark, no-nonsense workout library for planning your training week. Browse a catalog of lifts, lock the ones you want into today's plan, mark them off as you finish, and watch your minutes and calories add up.
 
 ## Description
