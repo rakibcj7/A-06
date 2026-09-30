@@ -1,5 +1,5 @@
 "use client";
-
+import Image from 'next/image'
 import { Play, ShoppingCart, Clock, Zap, BarChart } from "lucide-react";
 import { usePlan } from "@/contexts/PlanContext";
 import { useToast } from "@/components/Toast";
@@ -13,10 +13,10 @@ interface WorkoutDetailProps {
 export function WorkoutDetail({ workout }: WorkoutDetailProps) {
   const { addToPlan, saveForLater, plan, saved } = usePlan();
   const { addToast } = useToast();
-
+    
   const handleAddToPlan = () => {
     addToPlan(workout);
-    addToast("Added to today's plan", "success");
+              addToast("Added to today's plan", "success");
   };
 
   const handleSaveForLater = () => {
@@ -30,12 +30,12 @@ export function WorkoutDetail({ workout }: WorkoutDetailProps) {
   return (
     <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:items-start lg:gap-12">
       <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           src={workout.image}
           alt={workout.name}
           className="h-full w-full object-cover"
-        />
+        >
+          </Image>
       </div>
 
       <div className="flex flex-col gap-6">
@@ -55,14 +55,14 @@ export function WorkoutDetail({ workout }: WorkoutDetailProps) {
           ))}
         </div>
 
-        <div className="space-y-1">
+           <div className="space-y-1">
           <SpecRow label="Equipment" value={workout.equipment} />
           <SpecRow label="Difficulty" value={workout.difficulty} />
           <SpecRow label="Sets" value={workout.sets} />
           <SpecRow label="Reps" value={workout.reps} />
           <SpecRow label="Duration" value={`${workout.duration} min`} />
           <SpecRow label="Calories" value={`${workout.caloriesBurned} kcal`} />
-          <SpecRow label="Rating" value={workout.rating} />
+                 <SpecRow label="Rating" value={workout.rating} />
         </div>
 
         <div className="flex items-center gap-3">
@@ -71,7 +71,7 @@ export function WorkoutDetail({ workout }: WorkoutDetailProps) {
             label="Duration"
             value={`${workout.duration} min`}
           />
-          <StatPill
+                  <StatPill
             icon={<Zap className="h-4 w-4 text-[#888]" />}
             label="Calories"
             value={`${workout.caloriesBurned} kcal`}
@@ -87,15 +87,15 @@ export function WorkoutDetail({ workout }: WorkoutDetailProps) {
           <h3 className="mb-2 font-display text-sm font-bold uppercase text-[#ededed]">Instructions</h3>
           <ol className="space-y-2">
             {workout.instructions.map((step, i) => (
-              <li key={i} className="flex gap-3">
+                      <li key={i} className="flex gap-3">
                 <span className="font-display text-sm font-bold text-[#ccff00]">{i + 1}.</span>
                 <span className="text-sm text-[#ededed]">{step}</span>
               </li>
             ))}
           </ol>
         </div>
-
-        <div className="flex flex-col gap-3 pt-2 sm:flex-row">
+ 
+               <div className="flex flex-col gap-3 pt-2 sm:flex-row">
           <button
             onClick={handleAddToPlan}
             disabled={isInPlan}
@@ -111,7 +111,7 @@ export function WorkoutDetail({ workout }: WorkoutDetailProps) {
           >
             <ShoppingCart className="h-4 w-4" />
             {isSaved ? "Saved" : "Save for later"}
-          </button>
+                  </button>
         </div>
       </div>
     </div>

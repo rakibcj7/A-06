@@ -3,7 +3,7 @@ import type { Workout } from "./types";
 const API_BASE = "https://api.api-store.workers.dev/api/fitlog";
 
 export async function fetchWorkouts(): Promise<Workout[]> {
-  const res = await fetch(API_BASE, { next: { revalidate: 3600 } });
+           const res = await fetch(API_BASE, { next: { revalidate: 3600 } });
   if (!res.ok) throw new Error("Failed to fetch workouts");
   return res.json();
 }

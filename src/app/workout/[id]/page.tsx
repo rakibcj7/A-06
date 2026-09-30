@@ -28,7 +28,6 @@ export default async function WorkoutPage({ params }: PageProps) {
   try {
     workout = await fetchWorkoutById(id);
   } catch {
-    // workout stays null
   }
 
   if (!workout) {

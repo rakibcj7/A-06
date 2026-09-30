@@ -27,7 +27,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
     }, 3000);
   };
 
-  const removeToast = (id: number) => {
+            const removeToast = (id: number) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   };
 

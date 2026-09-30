@@ -25,7 +25,7 @@ export function Navbar() {
   ];
 
   return (
-    <nav className="flex items-center justify-between px-4 py-3 md:px-6 lg:px-8">
+                  <nav className="flex items-center justify-between px-4 py-3 md:px-6 lg:px-8">
       <Link href="/" className="flex items-center gap-2">
         <Image src="/logo.png" alt="FitLog" width={32} height={32} priority />
         <span className="font-display text-xl font-bold">FITLOG</span>
@@ -33,9 +33,9 @@ export function Navbar() {
 
       <div className="flex items-center gap-6">
         {navLinks.map(({ href, label }) => {
-          const isActive = pathname === href;
+                 const isActive = pathname === href;
           return (
-            <Link
+                         <Link
               key={href}
               href={href}
               className={

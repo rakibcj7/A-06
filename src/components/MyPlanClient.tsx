@@ -1,5 +1,5 @@
 "use client";
-
+ import Image from 'next/image'
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -15,9 +15,9 @@ export default function MyPlanClient() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<"plan" | "saved">("plan");
   const [mounted, setMounted] = useState(false);
+ 
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
 
@@ -108,13 +108,14 @@ export default function MyPlanClient() {
                   isDone ? "opacity-60" : ""
                 }`}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <Image
                   src={workout.image}
                   alt={workout.name}
                   className="h-16 w-16 rounded-lg object-cover"
                   loading="lazy"
-                />
+                >
+
+                  </Image>
                 <div className="flex-1">
                   <h3
                     className={`font-display text-lg font-bold ${isDone ? "line-through" : ""}`}

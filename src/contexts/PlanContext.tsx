@@ -24,17 +24,17 @@ function getInitialState(): {
   saved: Workout[];
   completed: Set<number>;
 } {
-  if (typeof window === "undefined") {
+           if (typeof window === "undefined") {
     return { plan: [], saved: [], completed: new Set() };
   }
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
+               const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       const parsed = JSON.parse(stored);
       return {
         plan: parsed.plan || [],
         saved: parsed.saved || [],
-        completed: new Set(parsed.completed || []),
+                   completed: new Set(parsed.completed || []),
       };
     }
   } catch {}
@@ -42,15 +42,15 @@ function getInitialState(): {
 }
 
 export function PlanProvider({ children }: { children: ReactNode }) {
-  const [plan, setPlan] = useState<Workout[]>(() => getInitialState().plan);
+            const [plan, setPlan] = useState<Workout[]>(() => getInitialState().plan);
   const [saved, setSaved] = useState<Workout[]>(() => getInitialState().saved);
   const [completed, setCompleted] = useState<Set<number>>(() => getInitialState().completed);
 
-  const persist = (p: Workout[], s: Workout[], c: Set<number>) => {
+               const persist = (p: Workout[], s: Workout[], c: Set<number>) => {
     if (typeof window === "undefined") return;
     localStorage.setItem(
       STORAGE_KEY,
-      JSON.stringify({ plan: p, saved: s, completed: Array.from(c) })
+               JSON.stringify({ plan: p, saved: s, completed: Array.from(c) })
     );
   };
 
@@ -58,12 +58,12 @@ export function PlanProvider({ children }: { children: ReactNode }) {
     setPlan((prev) => {
       if (prev.some((w) => w.id === workout.id)) return prev;
       const next = [...prev, workout];
-      persist(next, saved, completed);
+                persist(next, saved, completed);
       return next;
     });
   };
 
-  const removeFromPlan = (id: number) => {
+               const removeFromPlan = (id: number) => {
     setPlan((prev) => {
       const next = prev.filter((w) => w.id !== id);
       persist(next, saved, completed);
@@ -71,7 +71,7 @@ export function PlanProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  const markAsDone = (id: number) => {
+             const markAsDone = (id: number) => {
     setCompleted((prev) => {
       const next = new Set(prev);
       if (next.has(id)) {
@@ -85,7 +85,7 @@ export function PlanProvider({ children }: { children: ReactNode }) {
   };
 
   const saveForLater = (workout: Workout) => {
-    setSaved((prev) => {
+                 setSaved((prev) => {
       if (prev.some((w) => w.id === workout.id)) return prev;
       const next = [...prev, workout];
       persist(plan, next, completed);
@@ -94,7 +94,7 @@ export function PlanProvider({ children }: { children: ReactNode }) {
   };
 
   const removeFromSaved = (id: number) => {
-    setSaved((prev) => {
+         setSaved((prev) => {
       const next = prev.filter((w) => w.id !== id);
       persist(plan, next, completed);
       return next;
@@ -106,7 +106,7 @@ export function PlanProvider({ children }: { children: ReactNode }) {
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
-        const parsed = JSON.parse(stored);
+                   const parsed = JSON.parse(stored);
         persist(parsed.plan || [], parsed.saved || [], new Set());
       }
     }
@@ -122,7 +122,7 @@ export function PlanProvider({ children }: { children: ReactNode }) {
         removeFromPlan,
         markAsDone,
         saveForLater,
-        removeFromSaved,
+           removeFromSaved,
         clearCompleted,
       }}
     >
@@ -133,6 +133,6 @@ export function PlanProvider({ children }: { children: ReactNode }) {
 
 export function usePlan() {
   const ctx = useContext(PlanContext);
-  if (!ctx) throw new Error("usePlan must be used within PlanProvider");
+          if (!ctx) throw new Error("usePlan must be used within PlanProvider");
   return ctx;
 }
